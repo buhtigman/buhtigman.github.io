@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      body{ margin:0;}
+      img{width:500px;}
+      .container{
+                display:flex;
+                height: 100vh;}
+      .item1{ flex-grow:2;
+              background-color: FFFFFF;}
+      .item2{ flex-grow:4;
+              background-color: #1f2f54;}
+      .item3{ flex-grow:3;
+              background-color: #808080;}
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      /*インターバルIDの格納先*/
+      let event_ids = [];
+
+      /*クッキーのカウンタ */
+      let ls_count = localStorage.getItem("ls_count");
+      if(ls_count){
+        cookie_count = parseInt(ls_count);
+      }else{
+      cookie_count = 0;
+      }
+      setInterval(save_action,1000);
+      function save_action() {
+        localStorage.setItem("ls_count",cookie_count);
+      }
+
+      su_event_id = setInterval(screen_update,100);
+      function screen_update() {
+        var count_text = document.getElementById('cookie_count')
+        count_text.textContent = cookie_count;
+      }
+
+      function event_clear() {
+        clearInterval(su_event_id);
+      }
+
+      function cookieClick(num) {
+        var cookie_img = document.getElementById('cookie_img');
+        cookie_img.classList.remove('animate__animated','animate__shakeX');
+        void cookie_img.offsetWidth;
+        cookie_img.classList.add('animate__animated','animate__shakeX');
+
+        cookie_count= cookie_count +num;
+      }
+
+      function cursor() {
+        if (cookie_count>=100){
+          cookie_count-=100;
+          let r_id = setInterval("cookieClick(1)",10000);
+          event_ids.push(r_id);
+        }
+      }
+
+      function sell_cursor() {
+        if(event_ids.length > 0){
+          let r_id = event_ids.pop();
+          clearInterval(r_id);
+        }
+      }
+
+      function grandma() {
+        if (cookie_count>=1000){
+        cookie_count-=1000;
+        setInterval("cookieClick(1)",1000);
+        }
+      }
+      function farm() {
+        if (cookie_count>=10000){
+        cookie_count-=10000;
+        setInterval("cookieClick(1)",100);
+        }
+      }
+      function mine() {
+        if (cookie_count>=100000){
+        cookie_count-=100000;
+        setInterval("cookieClick(1)",10);
+        }
+      }
+      function factory() {
+        if (cookie_count>=1000000){
+        cookie_count-=1000000;
+        setInterval("cookieClick(1)",1);
+        }
+      }
+
+      /*施設切り替え処理*/
+
+      function buildings_switch() {
+        let list_ele = document.getElementById('buildings_buy');
+        list_ele.style.display = "none";
+      }
+
+    </script>
+    <div class="container">
+      <div class="item1">
+        <button id="screen_switch" onclick="event_clear()" type="button" name="button">更新切り替え</button>
+        <p>
+          <span id="cookie_count"></span> cookies
+        </p>
+        <img id="cookie_img"onclick="cookieClick(1)" src="E:/cookie.png" alt="">
+      </div>
+      <div class="item2">
+        <p class="animate__animated animate__bounce">製作途中</p>
+      </div>
+      <div class="item3">
+        <div id="buildings_buy">
+          <span onclick="buildings_switch()">購入</span>
+          <ul>
+            <li onclick="cursor()">カーソル</li>
+            <li onclick="grandma()">グランマ</li>
+            <li onclick="farm()">ファーム</li>
+            <li onclick="mine()">マイン</li>
+            <li onclick="factory()">ファクトリーム</li>
+          </ul>
+        </div>
+        <div id="bildings_sell">
+          <span onclick="buildings_switch()">売却</span>
+          <ul>
+            <li onclick="sell_cursor()">カーソル</li>
+            <li onclick="sell_grandma()">グランマ</li>
+            <li onclick="sell_farm()">ファーム</li>
+            <li onclick="sell_mine()">マイン</li>
+            <li onclick="sell_factory()">ファクトリーム</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+  </body>
+</html>
